@@ -10,6 +10,7 @@ const contactDevRoutes = require('./routes/contactDev.route');
 const ocrRoutes = require('./routes/ocr.route');
 const localizeRoutes = require('./routes/localize.route');
 const obstacleWarningRoutes = require('./routes/obstacleWarning.route');
+const arMarkersRoutes = require('./routes/arMarkers.route');
 
 // Swagger Setup
 const swaggerUi = require('swagger-ui-express');
@@ -57,5 +58,6 @@ app.use('/', contactDevRoutes);
 app.use('/', ocrRoutes);
 app.use('/', localizeRoutes);
 app.use('/', obstacleWarningRoutes);
+app.use('/', arMarkersRoutes);
 
 module.exports = app;

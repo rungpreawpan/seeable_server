@@ -11,7 +11,7 @@ function getPlaces(req, res) {
   });
 }
 
-// POST /places
+// POST /places 
 function addPlace(req, res) {
   const { name, gateway, ble_count, ble_names } = req.body;
 
