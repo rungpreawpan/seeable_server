@@ -2,13 +2,10 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const registerRoutes = require('./routes/register.route');
 const loginRoutes = require('./routes/login.route');
-const navigationRoutes = require('./routes/navigation.route');
-const placeRoutes = require('./routes/place.route');
 const forgetRoutes = require('./routes/forget.route');
-const yoloRoutes = require('./routes/objectDetect.route');
+const objectDetectionRoutes = require('./routes/objectDetect.route');
 const contactDevRoutes = require('./routes/contactDev.route');
 const ocrRoutes = require('./routes/ocr.route');
-const localizeRoutes = require('./routes/localize.route');
 const obstacleWarningRoutes = require('./routes/obstacleWarning.route');
 const arMarkersRoutes = require('./routes/arMarkers.route');
 
@@ -50,13 +47,10 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 // API route
 app.use('/', registerRoutes);
 app.use('/', loginRoutes);
-app.use('/', navigationRoutes);
-app.use('/', placeRoutes);
 app.use('/', forgetRoutes);
-app.use('/', yoloRoutes);
+app.use('/', objectDetectionRoutes);
 app.use('/', contactDevRoutes);
 app.use('/', ocrRoutes);
-app.use('/', localizeRoutes);
 app.use('/', obstacleWarningRoutes);
 app.use('/', arMarkersRoutes);
 
