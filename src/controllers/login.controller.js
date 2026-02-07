@@ -1,4 +1,4 @@
-const { findUserByUsername, findUserByUUID } = require('../models/user.model');
+const { findUserByUsername, findUserByID } = require('../models/user.model');
 
 // POST /login
 function login(req, res) {
@@ -20,7 +20,7 @@ function login(req, res) {
     res.status(200).json({
       message: 'เข้าสู่ระบบสำเร็จ',
       user: {
-        uuid: user.uuid,
+        id: user.id,
         firstname: user.firstname,
         lastname: user.lastname,
         email: user.email,
@@ -29,19 +29,20 @@ function login(req, res) {
   });
 }
 
-// GET /user/:uuid
-function getUserByUUID(req, res) {
-  const uuid = req.params.uuid;
+function getUserById(req, res) {
+  const { id } = req.params;
 
-  findUserByUUID(uuid, (err, user) => {
-    if (err) return res.status(500).json({ error: 'เกิดข้อผิดพลาดในระบบ' });
+  findUserByID(id, (err, user) => {
+    if (err) {
+      return res.status(500).json({ error: 'เกิดข้อผิดพลาดในระบบ' });
+    }
 
     if (!user) {
       return res.status(404).json({ error: 'ไม่พบผู้ใช้' });
     }
 
     res.status(200).json({
-      uuid: user.uuid,
+      id: user.id,
       firstname: user.firstname,
       lastname: user.lastname,
       username: user.username,
@@ -50,4 +51,4 @@ function getUserByUUID(req, res) {
   });
 }
 
-module.exports = { login, getUserByUUID };
+module.exports = { login, getUserById };

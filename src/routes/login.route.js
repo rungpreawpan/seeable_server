@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { login, getUserByUUID } = require('../controllers/login.controller');
+const { login, getUserById } = require('../controllers/login.controller');
 
 /**
  * @swagger
@@ -37,8 +37,6 @@ const { login, getUserByUUID } = require('../controllers/login.controller');
  *                 user:
  *                   type: object
  *                   properties:
- *                     uuid:
- *                       type: string
  *                     firstname:
  *                       type: string
  *                     lastname:
@@ -48,20 +46,21 @@ const { login, getUserByUUID } = require('../controllers/login.controller');
  *       400:
  *         description: ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง
  */
+router.post('/login', login);
 
 /**
  * @swagger
- * /user/{uuid}:
+ * /user/{id}:
  *   get:
- *     summary: ดึงข้อมูลผู้ใช้จาก UUID
+ *     summary: ดึงข้อมูลผู้ใช้จาก ID
  *     tags: [User]
  *     parameters:
  *       - in: path
- *         name: uuid
+ *         name: id
  *         required: true
  *         schema:
  *           type: string
- *         description: UUID ของผู้ใช้
+ *         description: ID ของผู้ใช้
  *     responses:
  *       200:
  *         description: รายละเอียดผู้ใช้
@@ -70,8 +69,6 @@ const { login, getUserByUUID } = require('../controllers/login.controller');
  *             schema:
  *               type: object
  *               properties:
- *                 uuid:
- *                   type: string
  *                 firstname:
  *                   type: string
  *                 lastname:
@@ -83,8 +80,6 @@ const { login, getUserByUUID } = require('../controllers/login.controller');
  *       404:
  *         description: ไม่พบผู้ใช้
  */
-
-router.post('/login', login);
-router.get('/user/:uuid', getUserByUUID);
+router.get('/user/{:id}', getUserById);
 
 module.exports = router;

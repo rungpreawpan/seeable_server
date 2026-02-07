@@ -17,7 +17,6 @@ const { registerUser, updateUser } = require('../controllers/register.controller
  *             required:
  *               - firstname
  *               - lastname
- *               - uuid
  *               - username
  *               - password
  *               - email
@@ -25,8 +24,6 @@ const { registerUser, updateUser } = require('../controllers/register.controller
  *               firstname:
  *                 type: string
  *               lastname:
- *                 type: string
- *               uuid:
  *                 type: string
  *               username:
  *                 type: string
@@ -47,15 +44,15 @@ router.post('/register', registerUser);
 
 /**
  * @swagger
- * /users/{uuid}:
+ * /users/{id}:
  *   put:
  *     summary: แก้ไขข้อมูลผู้ใช้
  *     tags: [Auth]
  *     parameters:
  *       - in: path
- *         name: uuid
+ *         name: id
  *         required: true
- *         description: UUID ของผู้ใช้
+ *         description: ID ของผู้ใช้
  *         schema:
  *           type: string
  *     requestBody:
@@ -83,6 +80,6 @@ router.post('/register', registerUser);
  *       500:
  *         description: ไม่สามารถแก้ไขข้อมูลได้
  */
-router.put('/users/:uuid', updateUser);
+router.put('/users/:id', updateUser);
 
 module.exports = router;

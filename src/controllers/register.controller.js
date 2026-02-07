@@ -2,21 +2,18 @@ const { createUser } = require('../models/user.model');
 const db = require('../db/sqlite');
 
 function registerUser(req, res) {
-  const { firstname, lastname, username, password, email, uuid } = req.body;
+  const { firstname, lastname, username, password, email } = req.body;
 
-  if (!firstname || !lastname || !username || !password || !email || !uuid) {
+  if (!firstname || !lastname || !username || !password || !email ) {
     return res.status(400).json({ error: 'กรุณากรอกข้อมูลให้ครบถ้วน' });
   }
 
   createUser(
-    { firstname, lastname, uuid, username, password, email },
+    { firstname, lastname, username, password, email },
     function (err) {
       if (err) {
         console.error('Error:', err.message);
 
-        if (err.message.includes('uuid')) {
-          return res.status(400).json({ error: 'UUID นี้ถูกใช้ไปแล้ว' });
-        }
         if (err.message.includes('username')) {
           return res.status(400).json({ error: 'Username นี้ถูกใช้ไปแล้ว' });
         }
@@ -34,8 +31,8 @@ function registerUser(req, res) {
 }
 
 function updateUser(req, res) {
-  const { uuid } = req.params;
-  const { firstname, lastname, email, password, newUuid, username } = req.body;
+  const { id } = req.params;
+  const { firstname, lastname, email, password, username } = req.body;
 
   const fields = [];
   const values = [];
@@ -56,10 +53,6 @@ function updateUser(req, res) {
     fields.push('password = ?');
     values.push(password);
   }
-  if (newUuid) {
-    fields.push('uuid = ?');
-    values.push(newUuid);
-  }
   if (username) {
     fields.push('username = ?');
     values.push(username);
@@ -69,18 +62,13 @@ function updateUser(req, res) {
     return res.status(400).json({ error: 'ไม่ได้ส่งข้อมูลที่จะแก้ไข' });
   }
 
-  const sql = `UPDATE users SET ${fields.join(', ')} WHERE uuid = ?`;
-  values.push(uuid);
-
-  db.run(sql, values, function (err) {
+  const sql = `UPDATE users SET ${fields.join(', ')} WHERE id = ?`;
+  db.run(sql, [...values, id], function (err) {
     if (err) {
       console.error('Update user error:', err.message);
 
       if (err.message.includes('email')) {
         return res.status(400).json({ error: 'Email นี้ถูกใช้ไปแล้ว' });
-      }
-      if (err.message.includes('uuid')) {
-        return res.status(400).json({ error: 'UUID นี้ถูกใช้ไปแล้ว' });
       }
       if (err.message.includes('username')) {
         return res.status(400).json({ error: 'Username นี้ถูกใช้ไปแล้ว' });
