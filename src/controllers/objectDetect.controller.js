@@ -5,60 +5,44 @@ const fs = require('fs');
 
 const upload = multer({ dest: 'uploads/' });
 
-let latestResult = null;
-
-const uploadImage = [
+const objectDetection = [
   upload.single('image'),
   async (req, res) => {
-    const imagePath = req.file.path;
-
     if (!req.file) {
       return res.status(400).json({ error: 'ไม่พบไฟล์ภาพที่อัปโหลด' });
     }
+
+    const imagePath = req.file.path;
 
     const form = new FormData();
     form.append('image', fs.createReadStream(imagePath));
 
     try {
-      const response = await axios.post('http://localhost:5001/detect', form, {
-        headers: form.getHeaders(),
-      });
+      const response = await axios.post(
+        'http://localhost:5001/object-detection',
+        form,
+        {
+          headers: form.getHeaders(),
+        },
+      );
 
-      res.json({
-        message: 'Image sent to Python',
-        status: response.data.status,
-      });
+      return res.status(200).json(response.data);      
     } catch (err) {
       console.error('Error:', err.message);
-      res.status(500).json({ error: 'Failed to send to Python' });
+      return res.status(500).json({
+        error: 'Failed to send to Python',
+        detail: err.message,
+      });
     } finally {
       fs.unlink(imagePath, (err) => {
         if (err) {
           console.error('ลบไฟล์ไม่สำเร็จ:', err.message);
-        } else {
-          console.log(`ลบไฟล์ชั่วคราวแล้ว: ${imagePath}`);
         }
       });
     }
   },
 ];
 
-const receiveResult = (req, res) => {
-  latestResult = req.body;
-  console.log('Result from Python:', latestResult);
-  res.sendStatus(200);
-};
-
-const getLatest = (req, res) => {
-  if (latestResult) {
-    res.json(latestResult);
-  } else {
-    res.status(404).json({ error: 'No result yet' });
-  }
-};
-
 module.exports = {
-  uploadImage,
-  receiveResult,
-  getLatest,
+  objectDetection,
 };

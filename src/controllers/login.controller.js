@@ -23,6 +23,7 @@ function login(req, res) {
         id: user.id,
         firstname: user.firstname,
         lastname: user.lastname,
+        username: user.username,
         email: user.email,
       },
     });
