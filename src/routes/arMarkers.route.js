@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const arMarkersController = require('../controllers/arMarkers.controller');
+const navigationController = require('../controllers/navigation.controller')
 
 /**
  * @swagger
@@ -178,7 +179,7 @@ router.delete('/ar-markers/:id', arMarkersController.deleteArMarker);
  */
 router.post(
   '/ar-markers/detect-and-navigate',
-  arMarkersController.detectAndNavigate,
+  navigationController.detectAndNavigate,
 );
 
 /**
@@ -204,7 +205,7 @@ router.post(
  */
 router.post(
   '/ar-markers/update-position',
-  arMarkersController.updateNavigationPosition,
+  navigationController.updateNavigationPosition,
 );
 
 /**   
