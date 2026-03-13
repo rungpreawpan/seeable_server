@@ -390,8 +390,6 @@ const updateNavigationPosition = [
       });
     }
 
-    console.log('Received update position request:', currentNode);
-
     const destination = session.destination;
     const startNode = session.start;
 
